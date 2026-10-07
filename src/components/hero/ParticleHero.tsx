@@ -39,8 +39,8 @@ export function ParticleHero() {
 
     const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     const coarsePointer = window.matchMedia('(pointer: coarse)').matches;
-    const particleDensity = coarsePointer ? 2.35 : 3;
-    const maxParticles = coarsePointer ? 4200 : 6200;
+    const particleDensity = coarsePointer ? 2 : 3;
+    const maxParticles = coarsePointer ? 5200 : 6200;
     let particles: Particle[] = [];
     let width = 0;
     let height = 0;
@@ -71,8 +71,8 @@ export function ParticleHero() {
 
       const compactLayout = viewportWidth <= 600;
       const words = compactLayout ? ['VISHNU', 'VIKAS'] : ['VISHNU VIKAS'];
-      const fontWeight = 600;
-      let fontSize = Math.min(viewportWidth * (compactLayout ? 0.18 : coarsePointer ? 0.15 : 0.115), coarsePointer ? 120 : 148);
+      const fontWeight = compactLayout ? 700 : 600;
+      let fontSize = Math.min(viewportWidth * (compactLayout ? 0.17 : coarsePointer ? 0.15 : 0.115), coarsePointer ? 120 : 148);
       const maxTextWidth = viewportWidth * (compactLayout ? 0.86 : coarsePointer ? 0.92 : 0.76);
       sourceContext.font = `${fontWeight} ${fontSize}px "Space Grotesk", Arial, sans-serif`;
       while (Math.max(...words.map((word) => sourceContext.measureText(word).width)) > maxTextWidth && fontSize > 24) {
@@ -116,7 +116,7 @@ export function ParticleHero() {
             driftX: outward * viewportWidth * (0.52 + Math.random() * 0.65) + (Math.random() - 0.5) * 180,
             driftY: viewportHeight * (0.3 + Math.random() * 0.7) + normalizedY * 160,
             depth: (Math.random() - 0.45) * 2.4,
-            size: coarsePointer ? 0.9 + Math.random() * 0.55 : 0.6 + Math.random() * 1.1,
+            size: coarsePointer ? 1.25 + Math.random() * 0.6 : 0.6 + Math.random() * 1.1,
             phase: Math.random() * Math.PI * 2,
             brightness: 0.56 + Math.random() * 0.44,
             offsetX: 0,
@@ -198,7 +198,7 @@ export function ParticleHero() {
       for (let index = 0; index < particles.length; index += 1) {
         const particle = particles[index];
         const delay = particle.phase / (Math.PI * 2) * 0.34;
-        const formation = reducedMotion ? 1 : smoothstep(clamp((introProgress - delay) / 0.66));
+        const formation = reducedMotion || width <= 600 ? 1 : smoothstep(clamp((introProgress - delay) / 0.66));
         const idleMotion = coarsePointer ? 0.35 : 2.2;
         const idleX = reducedMotion ? 0 : Math.sin(seconds * 0.72 + particle.phase) * idleMotion;
         const idleY = reducedMotion ? 0 : Math.cos(seconds * 0.61 + particle.phase) * idleMotion;
@@ -228,11 +228,11 @@ export function ParticleHero() {
         const x = originX + particle.offsetX + idleX + pointer.x * 9 * (1 - dissolve) * particle.brightness;
         const y = originY + particle.offsetY + idleY + pointer.y * 5 * (1 - dissolve);
         const radius = Math.max(0.5, particle.size * perspective * (1 + dissolve * 0.32));
-        const baseOpacity = coarsePointer ? 0.9 + particle.brightness * 0.1 : 0.52 + particle.brightness * 0.42;
+        const baseOpacity = coarsePointer || width <= 600 ? 1 : 0.52 + particle.brightness * 0.42;
         const alpha = baseOpacity * (1 - dissolve * 0.3);
 
         context.globalAlpha = alpha;
-        context.fillStyle = particle.brightness > 0.88 ? '#e5efff' : '#8bb0ff';
+        context.fillStyle = width <= 600 || particle.brightness > 0.88 ? '#eef4ff' : '#8bb0ff';
         context.fillRect(x, y, radius, radius);
 
         const glowStride = coarsePointer ? 52 : 89;
