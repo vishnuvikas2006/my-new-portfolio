@@ -5,10 +5,10 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "tsc -b && vite build",
+    "build": "tsc -b && cf build",
     "preview": "vite preview",
     "lint": "tsc --noEmit",
-    "deploy": "cf deploy"
+    "deploy": "npm run build && cf deploy --prebuilt"
   },
   "dependencies": {
     "@vitejs/plugin-react": "latest",

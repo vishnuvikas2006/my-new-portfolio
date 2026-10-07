@@ -11,6 +11,15 @@ npm run dev
 
 Create a production build with `npm run build`.
 
+## Deploy to Cloudflare Workers
+
+This project uses `cloudflare.config.ts`, the Cloudflare Vite plugin, and the `cf` CLI. In the Cloudflare Workers Builds settings, use:
+
+- Build command: `npm run build`
+- Deploy command: `cf deploy --prebuilt`
+
+Do not use `wrangler deploy` for this project; it does not read `cloudflare.config.ts`. For a local one-step build and deploy, run `npm run deploy`.
+
 ## Update your profile
 
 Edit [src/data/profile.ts](src/data/profile.ts) for contact details, social links, or headline text.
