@@ -69,25 +69,31 @@ export function ParticleHero() {
       const sourceContext = source.getContext('2d', { willReadFrequently: true });
       if (!sourceContext) return [];
 
+      const compactLayout = viewportWidth <= 600;
+      const words = compactLayout ? ['VISHNU', 'VIKAS'] : ['VISHNU VIKAS'];
       const fontWeight = coarsePointer ? 700 : 600;
-      let fontSize = Math.min(viewportWidth * (coarsePointer ? 0.15 : 0.115), coarsePointer ? 120 : 148);
-      const maxTextWidth = viewportWidth * (coarsePointer ? 0.92 : 0.76);
+      let fontSize = Math.min(viewportWidth * (compactLayout ? 0.19 : coarsePointer ? 0.15 : 0.115), coarsePointer ? 120 : 148);
+      const maxTextWidth = viewportWidth * (compactLayout ? 0.86 : coarsePointer ? 0.92 : 0.76);
       sourceContext.font = `${fontWeight} ${fontSize}px "Space Grotesk", Arial, sans-serif`;
-      while (sourceContext.measureText('VISHNU VIKAS').width > maxTextWidth && fontSize > 24) {
+      while (Math.max(...words.map((word) => sourceContext.measureText(word).width)) > maxTextWidth && fontSize > 24) {
         fontSize -= 1;
         sourceContext.font = `${fontWeight} ${fontSize}px "Space Grotesk", Arial, sans-serif`;
       }
 
-      const metrics = sourceContext.measureText('VISHNU VIKAS');
-      const textWidth = Math.ceil(metrics.width);
-      const textHeight = Math.ceil(fontSize * 1.45);
+      const textWidth = Math.ceil(Math.max(...words.map((word) => sourceContext.measureText(word).width)));
+      const lineAdvance = fontSize * 1.05;
+      const textHeight = Math.ceil(compactLayout ? fontSize * 2.1 : fontSize * 1.45);
       source.width = textWidth + 28;
       source.height = textHeight + 28;
       sourceContext.clearRect(0, 0, source.width, source.height);
       sourceContext.font = `${fontWeight} ${fontSize}px "Space Grotesk", Arial, sans-serif`;
       sourceContext.fillStyle = '#ffffff';
       sourceContext.textBaseline = 'middle';
-      sourceContext.fillText('VISHNU VIKAS', 14, source.height / 2 + fontSize * 0.015);
+      sourceContext.textAlign = 'center';
+      words.forEach((word, index) => {
+        const lineOffset = (index - (words.length - 1) / 2) * lineAdvance;
+        sourceContext.fillText(word, source.width / 2, source.height / 2 + lineOffset);
+      });
 
       const pixels = sourceContext.getImageData(0, 0, source.width, source.height).data;
       const sampled: Particle[] = [];
