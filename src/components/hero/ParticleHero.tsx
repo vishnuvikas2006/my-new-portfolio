@@ -191,14 +191,15 @@ export function ParticleHero() {
 
       const dissolve = smoothstep(displayedProgress);
       const seconds = time * 0.001;
-      const introProgress = reducedMotion ? 1 : clamp((time - introStartTime) / (coarsePointer ? 1200 : 3200));
+      const introDuration = width <= 600 ? 2200 : coarsePointer ? 1200 : 3200;
+      const introProgress = reducedMotion ? 1 : clamp((time - introStartTime) / introDuration);
       context.clearRect(0, 0, width, height);
       context.globalCompositeOperation = 'screen';
 
       for (let index = 0; index < particles.length; index += 1) {
         const particle = particles[index];
         const delay = particle.phase / (Math.PI * 2) * 0.34;
-        const formation = reducedMotion || width <= 600 ? 1 : smoothstep(clamp((introProgress - delay) / 0.66));
+        const formation = reducedMotion ? 1 : smoothstep(clamp((introProgress - delay) / 0.66));
         const idleMotion = coarsePointer ? 0.35 : 2.2;
         const idleX = reducedMotion ? 0 : Math.sin(seconds * 0.72 + particle.phase) * idleMotion;
         const idleY = reducedMotion ? 0 : Math.cos(seconds * 0.61 + particle.phase) * idleMotion;
