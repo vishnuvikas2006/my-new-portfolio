@@ -3,6 +3,8 @@ import { useEffect, useRef } from 'react';
 type Particle = {
   x: number;
   y: number;
+  startX: number;
+  startY: number;
   driftX: number;
   driftY: number;
   size: number;
@@ -45,25 +47,27 @@ export function ParticleSectionTitle({ text }: ParticleSectionTitleProps) {
       const sourceContext = source.getContext('2d', { willReadFrequently: true });
       if (!sourceContext) return;
 
-      let fontSize = Math.min(width * 0.115, 92);
+      const mobile = width <= 760;
+      let fontSize = mobile ? Math.min(width * 0.11, 58) : Math.min(width * 0.115, 92);
       const maxTextWidth = width * 0.94;
-      sourceContext.font = `600 ${fontSize}px "Space Grotesk", Arial, sans-serif`;
+      const fontWeight = mobile ? 700 : 600;
+      sourceContext.font = `${fontWeight} ${fontSize}px "Space Grotesk", Arial, sans-serif`;
       while (sourceContext.measureText(text).width > maxTextWidth && fontSize > 18) {
         fontSize -= 1;
-        sourceContext.font = `600 ${fontSize}px "Space Grotesk", Arial, sans-serif`;
+        sourceContext.font = `${fontWeight} ${fontSize}px "Space Grotesk", Arial, sans-serif`;
       }
 
       const textWidth = Math.ceil(sourceContext.measureText(text).width);
       source.width = textWidth + 24;
-      source.height = Math.ceil(fontSize * 1.42) + 24;
-      sourceContext.font = `600 ${fontSize}px "Space Grotesk", Arial, sans-serif`;
+      source.height = Math.ceil(fontSize * (mobile ? 1.55 : 1.42)) + 24;
+      sourceContext.font = `${fontWeight} ${fontSize}px "Space Grotesk", Arial, sans-serif`;
       sourceContext.fillStyle = '#ffffff';
       sourceContext.textBaseline = 'middle';
       sourceContext.fillText(text, 12, source.height / 2 + fontSize * 0.018);
 
       const pixels = sourceContext.getImageData(0, 0, source.width, source.height).data;
-      const sampleStep = coarsePointer ? 3 : 2;
-      const maxParticles = coarsePointer ? 1800 : 4200;
+      const sampleStep = mobile ? 2 : coarsePointer ? 3 : 2;
+      const maxParticles = mobile ? 2600 : coarsePointer ? 1800 : 4200;
       const sampled: Particle[] = [];
       const centeredX = (width - source.width) / 2;
       const centeredY = (height - source.height) / 2;
@@ -75,9 +79,11 @@ export function ParticleSectionTitle({ text }: ParticleSectionTitleProps) {
           sampled.push({
             x: centeredX + x,
             y: centeredY + y,
+            startX: mobile ? Math.random() * width : centeredX + x,
+            startY: mobile ? Math.random() * height : centeredY + y,
             driftX: direction * width * (0.035 + Math.random() * 0.07) + (Math.random() - 0.5) * 28,
             driftY: (Math.random() - 0.42) * height * 0.28,
-            size: 0.52 + Math.random() * 0.96,
+            size: mobile ? 1.1 + Math.random() * 0.65 : 0.52 + Math.random() * 0.96,
             brightness: 0.58 + Math.random() * 0.42,
             phase: Math.random() * Math.PI * 2,
           });
@@ -118,6 +124,7 @@ export function ParticleSectionTitle({ text }: ParticleSectionTitleProps) {
       dissolve += (targetDissolve - dissolve) * (reducedMotion ? 0.23 : 0.14);
       const spread = smoothstep(dissolve);
       const seconds = time / 1000;
+      const mobile = width <= 760;
       context.clearRect(0, 0, width, height);
       context.globalCompositeOperation = 'screen';
 
@@ -125,18 +132,25 @@ export function ParticleSectionTitle({ text }: ParticleSectionTitleProps) {
         const particle = particles[index];
         const idleX = reducedMotion ? 0 : Math.sin(seconds * 0.72 + particle.phase) * 0.85;
         const idleY = reducedMotion ? 0 : Math.cos(seconds * 0.6 + particle.phase) * 0.85;
-        const x = particle.x + particle.driftX * spread + idleX;
-        const y = particle.y + particle.driftY * spread + idleY;
-        const alpha = (0.63 + particle.brightness * 0.35) * (1 - spread * 0.28);
+        const formation = 1 - spread;
+        const x = mobile
+          ? particle.startX + (particle.x - particle.startX) * formation + idleX
+          : particle.x + particle.driftX * spread + idleX;
+        const y = mobile
+          ? particle.startY + (particle.y - particle.startY) * formation + idleY
+          : particle.y + particle.driftY * spread + idleY;
+        const alpha = mobile
+          ? 0.88 + particle.brightness * 0.12
+          : (0.63 + particle.brightness * 0.35) * (1 - spread * 0.28);
 
         context.globalAlpha = alpha;
-        context.fillStyle = particle.brightness > 0.88 ? '#ffffff' : '#d9e6ff';
+        context.fillStyle = mobile || particle.brightness > 0.88 ? '#eef4ff' : '#d9e6ff';
         context.fillRect(x, y, particle.size, particle.size);
 
-        if (index % 127 === 0) {
-          context.globalAlpha = alpha * 0.2;
+        if (index % (mobile ? 52 : 127) === 0) {
+          context.globalAlpha = alpha * (mobile ? 0.08 : 0.2);
           context.beginPath();
-          context.arc(x, y, particle.size * 3.2, 0, Math.PI * 2);
+          context.arc(x, y, particle.size * (mobile ? 3 : 3.2), 0, Math.PI * 2);
           context.fillStyle = '#abc6ff';
           context.fill();
         }
