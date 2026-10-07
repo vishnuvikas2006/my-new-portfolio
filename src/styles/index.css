@@ -767,10 +767,50 @@ code {
 .site-footer a:hover { color: #cbd9fa; }
 
 @media (max-width: 760px) {
-  .site-nav { width: calc(100% - 32px); height: 64px; }
-  .site-nav ul { gap: 0.68rem; }
-  .site-nav nav a { font-size: 0.56rem; letter-spacing: 0.06em; }
-  .site-nav nav button { font-size: 0.56rem; letter-spacing: 0.06em; }
+  .site-nav {
+    top: 0;
+    display: block;
+    width: 100%;
+    height: auto;
+    padding: 0.45rem 0.5rem;
+    opacity: 1;
+    border: 0;
+    background: transparent;
+  }
+  .site-nav--visible { border: 0; background: transparent; backdrop-filter: none; }
+  .nav-mark { display: none; }
+  .site-nav nav {
+    width: 100%;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  .site-nav nav::-webkit-scrollbar { display: none; }
+  .site-nav ul {
+    display: flex;
+    width: max-content;
+    min-width: 100%;
+    justify-content: space-between;
+    gap: clamp(0.75rem, 3vw, 1.25rem);
+  }
+  .site-nav nav a,
+  .site-nav nav button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 34px;
+    padding: 0.25rem 0;
+    color: #bfc7d9;
+    font-size: clamp(0.52rem, 2.1vw, 0.68rem);
+    letter-spacing: 0.06em;
+    white-space: nowrap;
+    border: 0;
+    background: transparent;
+  }
+  .site-nav nav a:hover,
+  .site-nav nav button:hover {
+    color: #bfc7d9;
+    text-shadow: none;
+  }
   .hero { height: 205svh; }
   .hero__meta { display: none; }
   .section { width: calc(100% - 36px); }
@@ -781,14 +821,6 @@ code {
 }
 
 @media (max-width: 480px) {
-  .site-nav nav {
-    max-width: calc(100vw - 76px);
-    overflow-x: auto;
-    scrollbar-width: none;
-  }
-  .site-nav nav::-webkit-scrollbar { display: none; }
-  .site-nav ul { gap: 0.52rem; }
-  .site-nav nav a { font-size: 0.49rem; }
   .hero { height: 190svh; }
   .hero__indicator { bottom: 2.25rem; }
   .section { width: calc(100% - 32px); padding: 5.5rem 0; }
@@ -810,10 +842,6 @@ code {
 }
 
 @media (max-width: 360px) {
-  .site-nav { width: calc(100% - 24px); }
-  .site-nav ul { gap: 0.45rem; }
-  .site-nav nav a { font-size: 0.47rem; }
-  .site-nav nav button { font-size: 0.47rem; }
   .section { width: calc(100% - 28px); }
   .identity-card__top { flex-direction: column; }
   .profile-image { flex-basis: 104px; width: 104px; height: 104px; min-width: 104px; min-height: 104px; }

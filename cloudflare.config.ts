@@ -2,7 +2,7 @@ import { defineConfig } from "cf/config";
 
 export default defineConfig({
   worker: {
-    "name": "vishnu-vikas-portfolio",
+    "name": "my-portfolio-site",
     "compatibilityDate": "2026-10-01",
     "observability": {
       "enabled": true
