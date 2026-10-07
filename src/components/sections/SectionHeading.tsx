@@ -17,14 +17,7 @@ export function SectionHeading({ id, eyebrow, title, description, particle = fal
           <span className="sr-only">{title}</span>
           <ParticleSectionTitle text={title} />
         </h2>
-      ) : (
-        <>
-          <h2 id={id} className="section-heading__plain-title">{title}</h2>
-          <div className="particle-section-title particle-section-title--mobile" aria-hidden="true">
-            <ParticleSectionTitle text={title} />
-          </div>
-        </>
-      )}
+      ) : <h2 id={id}>{title}</h2>}
       {description ? <p className="section-heading__description">{description}</p> : null}
     </header>
   );

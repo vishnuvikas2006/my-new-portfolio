@@ -279,8 +279,6 @@ h1, h2, h3, p { margin-top: 0; }
   height: 100%;
 }
 
-.particle-section-title--mobile { display: none; }
-
 .muted { color: #8792ae; }
 
 .section-heading__description,
@@ -774,21 +772,6 @@ code {
 .site-footer a:hover { color: #cbd9fa; }
 
 @media (max-width: 760px) {
-  .section-heading__plain-title {
-    position: absolute;
-    width: 1px;
-    height: 1px;
-    padding: 0;
-    margin: -1px;
-    overflow: hidden;
-    clip: rect(0, 0, 0, 0);
-    white-space: nowrap;
-    border: 0;
-  }
-  .particle-section-title--mobile {
-    display: block;
-    height: clamp(78px, 21vw, 108px);
-  }
   .site-nav {
     top: 0;
     display: block;
