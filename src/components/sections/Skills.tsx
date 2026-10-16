@@ -4,7 +4,7 @@ const skillGroups = [
   { label: 'Languages', skills: ['Python', 'Java'] },
   { label: 'Web', skills: ['HTML', 'CSS'] },
   { label: 'Data', skills: ['MongoDB'] },
-  { label: 'Tools', skills: ['VS Code', 'Docker', 'Git', 'GitHub', 'Coding Agents', 'Claude / Claude Code'] },
+  { label: 'Tools', skills: ['VS Code', 'Docker', 'Git', 'GitHub', 'Coding Agents', 'Claude / Claude Code','Cloudflare'] },
   { label: 'AI & ML', skills: ['Prompt Engineering', 'AI Agents'] },
   { label: 'Foundations', skills: ['System Design', 'Basic Data Structures and Algorithms'] },
 ];
