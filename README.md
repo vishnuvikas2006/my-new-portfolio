@@ -24,7 +24,7 @@ Do not use `wrangler deploy` for this project; it does not read `cloudflare.conf
 
 Edit [src/data/profile.ts](src/data/profile.ts) for contact details, social links, or headline text.
 
-To update the profile photo, replace or add `public/profile/profile.png`. The site always reads that one path. Until a photo is supplied, the interface shows a small `VV` fallback.
+To update the profile photo, replace `public/profile/profile.jpeg`. The site always reads that one path. Until a photo is supplied, the interface shows a small `VV` fallback.
 
 ## Add a project
 
@@ -61,4 +61,4 @@ Put optional certificate previews in `public/certificates/`. Without an image, a
 
 ## Change the favicon
 
-The favicon uses `public/profile/profile.png`, so replacing your profile image updates both the portrait and browser icon automatically.
+The favicon uses `public/favicon/favicon.svg`. Replace that file to update the browser icon.

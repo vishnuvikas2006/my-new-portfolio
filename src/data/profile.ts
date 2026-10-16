@@ -9,5 +9,5 @@ export const profile = {
   github: 'https://github.com/vishnuvikas2006',
   linkedin: 'https://www.linkedin.com/in/vishnu-vikas-490549217',
   website: 'https://vishnuvikas.com',
-  profileImage: '/profile/profile.png',
+  profileImage: '/profile/profile.jpeg',
 } as const;
