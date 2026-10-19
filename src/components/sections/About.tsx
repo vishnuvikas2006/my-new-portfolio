@@ -16,7 +16,7 @@ export function About() {
       <div className="about-grid">
         <div className="about-copy">
           <p>
-            I&apos;m a B.Tech student focused on Artificial Intelligence and Machine Learning, building useful software and
+            I&apos;m a B.Tech student focused on Artificial Intelligence,building useful software and
             AI-powered applications.
           </p>
           <p>
