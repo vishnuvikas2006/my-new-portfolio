@@ -1,6 +1,7 @@
 import { useEffect, useState, type ReactNode } from 'react';
 import { createPortal } from 'react-dom';
 import { certificates, type Certificate } from '../../data/certificates';
+import { certificates as hackathonCertificates } from '../../data/hackaton';
 import { SectionHeading } from './SectionHeading';
 
 const isExternalUrl = (url?: string) => {
@@ -121,8 +122,21 @@ export function Certificates({ onViewHackathons }: CertificatesProps) {
         emptyMessage="Certificate collection ready."
         emptyDetail={<>Add certificate entries in <code>src/data/certificates.ts</code>.</>}
       />
-      <button className="button certificates__hackathon-trigger" type="button" onClick={onViewHackathons}>
-        View All Hackathon Certificates <span aria-hidden="true">&rarr;</span>
+      <button
+        className="hackathon-archive-cta"
+        type="button"
+        onClick={onViewHackathons}
+        aria-label={`View all ${hackathonCertificates.length} hackathon certificates`}
+      >
+        <span className="hackathon-archive-cta__content">
+          <span className="hackathon-archive-cta__eyebrow">Hackathon archive / {String(hackathonCertificates.length).padStart(2, '0')} certificates</span>
+          <span className="hackathon-archive-cta__title">Explore my hackathon journey</span>
+          <span className="hackathon-archive-cta__description">Participation certificates.</span>
+        </span>
+        <span className="hackathon-archive-cta__action">
+          <span>View all certificates</span>
+          <span className="hackathon-archive-cta__arrow" aria-hidden="true">&rarr;</span>
+        </span>
       </button>
     </section>
   );
